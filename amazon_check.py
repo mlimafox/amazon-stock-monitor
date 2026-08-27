@@ -90,12 +90,69 @@ def save_state(state):
 
 
 def extract_price(text):
-    matches = re.findall(r"R\$\s*[\d.]+,\d{2}", text)
+    prices = re.findall(r"R\$\s*[\d.]+,\d{2}", text)
 
-    if matches:
-        return matches[0]
+    if prices:
+        return prices[0]
 
     return "Preço não identificado"
+
+
+def detect_stock(text):
+    lower = text.lower()
+
+    # Proteção contra CAPTCHA / bloqueios.
+    blocked = [
+        "captcha",
+        "robot check",
+        "verificação de segurança",
+        "digite os caracteres",
+        "confirme que você não é um robô",
+    ]
+
+    if any(word in lower for word in blocked):
+        return "unknown", "Amazon solicitou verificação"
+
+    # Evidências fortes de indisponibilidade.
+    unavailable = [
+        "não disponível",
+        "indisponível",
+        "atualmente indisponível",
+        "este produto não está disponível",
+        "temporariamente esgotado",
+        "esgotado",
+    ]
+
+    # Evidências fortes de disponibilidade.
+    available = [
+        "adicionar ao carrinho",
+        "comprar agora",
+        "comprar com 1 clique",
+        "adicionar à lista de desejos",
+    ]
+
+    has_unavailable = any(word in lower for word in unavailable)
+    has_available = any(word in lower for word in available)
+
+    # Se houver evidência clara de compra, priorizamos disponibilidade.
+    if has_available:
+        return "available", "Amazon apresentou opção de compra"
+
+    if has_unavailable:
+        return "unavailable", "Amazon indicou produto indisponível"
+
+    # "Em estoque" é outra evidência útil.
+    stock_phrases = [
+        "em estoque",
+        "em stock",
+        "disponível para envio",
+        "em pronta entrega",
+    ]
+
+    if any(word in lower for word in stock_phrases):
+        return "available", "Amazon indicou estoque"
+
+    return "unknown", "Não foi possível confirmar o estoque"
 
 
 async def check_product(page, product):
@@ -108,52 +165,44 @@ async def check_product(page, product):
     print(f"ASIN: {asin}")
 
     try:
-        await page.goto(
+        response = await page.goto(
             url,
             wait_until="domcontentloaded",
             timeout=60000,
         )
 
-        await page.wait_for_timeout(4000)
+        await page.wait_for_timeout(5000)
 
         text = await page.locator("body").inner_text()
 
-        blocked_words = [
-            "Digite os caracteres",
-            "Digite o código",
-            "CAPTCHA",
-            "Robot Check",
-            "Verificação de segurança",
-        ]
-
-        if any(word.lower() in text.lower() for word in blocked_words):
-            print("🟡 Amazon pediu verificação. Ignorando esta verificação.")
+        # Verificação HTTP.
+        if response and response.status >= 400:
+            print(f"🟡 HTTP {response.status} — estado desconhecido")
             return None
 
-        available = (
-            "Adicionar ao carrinho" in text
-            or "Comprar agora" in text
-        )
-
-        if "Não disponível" in text or "Indisponível" in text:
-            available = False
-
+        status, evidence = detect_stock(text)
         price = extract_price(text)
 
-        if available:
+        if status == "available":
             print(f"🟢 DISPONÍVEL — {price}")
-            status = "available"
-        else:
+            print(f"   Evidência: {evidence}")
+
+        elif status == "unavailable":
             print("🔴 INDISPONÍVEL")
-            status = "unavailable"
+            print(f"   Evidência: {evidence}")
+
+        else:
+            print("🟡 ESTADO DESCONHECIDO")
+            print(f"   Motivo: {evidence}")
 
         return {
             "status": status,
             "price": price,
+            "evidence": evidence,
         }
 
     except Exception as e:
-        print(f"❌ Erro ao verificar {asin}: {e}")
+        print(f"🟡 ERRO/ESTADO DESCONHECIDO: {e}")
         return None
 
 
@@ -163,14 +212,21 @@ async def main():
 
     async with async_playwright() as p:
 
-        browser = await p.chromium.launch(headless=True)
+        browser = await p.chromium.launch(
+            headless=True
+        )
 
         page = await browser.new_page(
             locale="pt-BR",
+            viewport={
+                "width": 1365,
+                "height": 900,
+            },
             user_agent=(
-                "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
-                "AppleWebKit/537.36 (KHTML, like Gecko) "
-                "Chrome/151.0.0.0 Safari/537.36"
+                "Mozilla/5.0 (X11; Linux x86_64) "
+                "AppleWebKit/537.36 "
+                "(KHTML, like Gecko) "
+                "Chrome/139.0.0.0 Safari/537.36"
             ),
         )
 
@@ -183,11 +239,20 @@ async def main():
 
             asin = product["asin"]
 
-            previous_status = state.get(asin, {}).get("status")
+            previous = state.get(asin, {})
+            previous_status = previous.get("status")
 
+            current_status = result["status"]
+
+            # Nunca sobrescreve o estado com "unknown".
+            if current_status == "unknown":
+                print("   Estado anterior preservado.")
+                continue
+
+            # ALERTA: passou de indisponível para disponível.
             if (
                 previous_status == "unavailable"
-                and result["status"] == "available"
+                and current_status == "available"
             ):
 
                 message = (
@@ -202,9 +267,11 @@ async def main():
 
                 send_telegram(message)
 
+            # Salva somente estados confiáveis.
             state[asin] = {
-                "status": result["status"],
+                "status": current_status,
                 "price": result["price"],
+                "evidence": result["evidence"],
             }
 
         await browser.close()
