@@ -1,42 +1,52 @@
 {
   "B0789QHT4P": {
     "status": "available",
-    "price": "R$281,49"
+    "price": "R$281,49",
+    "evidence": "Amazon apresentou opção de compra"
   },
   "B07VZSM1XF": {
-    "status": "unavailable",
-    "price": "R$274,89"
+    "status": "available",
+    "price": "R$564,86",
+    "evidence": "Amazon apresentou opção de compra"
   },
   "B08NVB7BS6": {
     "status": "unavailable",
-    "price": "R$185,23"
+    "price": "R$185,23",
+    "evidence": "Amazon indicou produto indisponível"
   },
   "B0992PXW6L": {
     "status": "unavailable",
-    "price": "R$93,82"
+    "price": "R$93,82",
+    "evidence": "Amazon indicou produto indisponível"
   },
   "B0C93LL82B": {
     "status": "unavailable",
-    "price": "R$ 299,97"
+    "price": "R$ 299,97",
+    "evidence": "Amazon indicou produto indisponível"
   },
   "B09MC7TNRW": {
     "status": "unavailable",
-    "price": "R$255,31"
+    "price": "R$255,31",
+    "evidence": "Amazon indicou produto indisponível"
   },
   "B07W1BF6D5": {
     "status": "unavailable",
-    "price": "R$185,71"
+    "price": "R$186,26",
+    "evidence": "Amazon indicou produto indisponível"
   },
   "B0DRHYR931": {
     "status": "unavailable",
-    "price": "R$736,09"
+    "price": "R$736,09",
+    "evidence": "Amazon indicou produto indisponível"
   },
   "B0BRNY49VK": {
     "status": "unavailable",
-    "price": "R$21,88"
+    "price": "R$21,88",
+    "evidence": "Amazon indicou produto indisponível"
   },
   "B0BRNVYSLY": {
     "status": "available",
-    "price": "R$78,99"
+    "price": "R$78,99",
+    "evidence": "Amazon apresentou opção de compra"
   }
 }
