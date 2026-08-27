@@ -14,10 +14,10 @@ jobs:
 
     steps:
       - name: Baixar código
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Configurar Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
@@ -55,4 +55,6 @@ jobs:
           curl -s -X POST \
             "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
             -d "chat_id=${TELEGRAM_CHAT_ID}" \
-            --data-urlencode "text=🚨 ERRO NO MONITOR AMAZON!%0A%0AO monitor encontrou um erro durante a verificação. Verifique o GitHub Actions."
+            --data-urlencode "text=🚨 ERRO NO MONITOR AMAZON!
+
+O monitor encontrou um erro durante a verificação. Verifique o GitHub Actions."
