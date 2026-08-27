@@ -9,7 +9,7 @@ from playwright.async_api import async_playwright
 
 
 TELEGRAM_BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
-TELEGRAM_CHAT_ID = "176701300"
+TELEGRAM_CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
 
 STATE_FILE = Path("state.json")
 
@@ -18,12 +18,42 @@ PRODUCTS = [
         "asin": "B0789QHT4P",
         "name": "Mansions of Madness — Sanctum of Twilight",
     },
-
-    # Adicione outros produtos aqui:
-    # {
-    #     "asin": "XXXXXXXXXX",
-    #     "name": "Nome do produto",
-    # },
+    {
+        "asin": "B07VZSM1XF",
+        "name": "Mansions of Madness — Path of the Serpent",
+    },
+    {
+        "asin": "B08NVB7BS6",
+        "name": "Amazon — B08NVB7BS6",
+    },
+    {
+        "asin": "B0992PXW6L",
+        "name": "Sentinels of the Multiverse — Definitive Edition",
+    },
+    {
+        "asin": "B0C93LL82B",
+        "name": "Metal Gear Solid: Master Collection Vol. 1 — PS5",
+    },
+    {
+        "asin": "B09MC7TNRW",
+        "name": "Amazon — B09MC7TNRW",
+    },
+    {
+        "asin": "B07W1BF6D5",
+        "name": "Marvel Champions — Core Set",
+    },
+    {
+        "asin": "B0DRHYR931",
+        "name": "Neo Geo Mini",
+    },
+    {
+        "asin": "B0BRNY49VK",
+        "name": "Amazon — B0BRNY49VK",
+    },
+    {
+        "asin": "B0BRNVYSLY",
+        "name": "Amazon — B0BRNVYSLY",
+    },
 ]
 
 
