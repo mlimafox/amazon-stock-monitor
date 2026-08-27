@@ -46,7 +46,7 @@ jobs:
           git diff --cached --quiet || git commit -m "Atualizar estado do monitor"
           git push
 
-      - name: 🚨 Avisar erro no Telegram
+      - name: Avisar erro no Telegram
         if: failure()
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
@@ -55,6 +55,4 @@ jobs:
           curl -s -X POST \
             "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
             -d "chat_id=${TELEGRAM_CHAT_ID}" \
-            --data-urlencode "text=🚨 ERRO NO MONITOR AMAZON!
-
-O monitor encontrou um erro durante a verificação. Verifique o GitHub Actions."
+            --data-urlencode "text=🚨 ERRO NO MONITOR AMAZON! O monitor encontrou um erro durante a verificação. Verifique o GitHub Actions."
