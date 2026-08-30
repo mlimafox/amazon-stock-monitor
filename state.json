@@ -5,9 +5,9 @@
     "evidence": "Amazon apresentou opção de compra"
   },
   "B07VZSM1XF": {
-    "status": "available",
-    "price": "R$562,53",
-    "evidence": "Amazon apresentou opção de compra"
+    "status": "unavailable",
+    "price": "R$274,89",
+    "evidence": "Amazon indicou produto indisponível"
   },
   "B08NVB7BS6": {
     "status": "unavailable",
