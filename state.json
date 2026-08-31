@@ -10,9 +10,9 @@
     "evidence": "Amazon indicou produto indisponível"
   },
   "B08NVB7BS6": {
-    "status": "available",
-    "price": "R$158,36",
-    "evidence": "Amazon apresentou opção de compra"
+    "status": "unavailable",
+    "price": "R$169,13",
+    "evidence": "Amazon indicou produto indisponível"
   },
   "B0992PXW6L": {
     "status": "unavailable",
@@ -26,7 +26,7 @@
   },
   "B09MC7TNRW": {
     "status": "unavailable",
-    "price": "R$511,75",
+    "price": "R$257,43",
     "evidence": "Amazon indicou produto indisponível"
   },
   "B07W1BF6D5": {
