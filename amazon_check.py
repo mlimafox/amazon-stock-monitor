@@ -101,7 +101,6 @@ def extract_price(text):
 def detect_stock(text):
     lower = text.lower()
 
-    # Proteção contra CAPTCHA / bloqueios.
     blocked = [
         "captcha",
         "robot check",
@@ -113,52 +112,56 @@ def detect_stock(text):
     if any(word in lower for word in blocked):
         return "unknown", "Amazon solicitou verificação"
 
-    # Evidências fortes de indisponibilidade.
-    unavailable = [
-        "não disponível",
-        "indisponível",
+    available_phrases = [
+        "adicionar ao carrinho",
+        "comprar agora",
+        "em estoque",
+        "disponível para envio",
+    ]
+
+    unavailable_phrases = [
         "atualmente indisponível",
         "este produto não está disponível",
         "temporariamente esgotado",
-        "esgotado",
+        "não temos previsão de quando este produto estará disponível",
     ]
 
-    # Evidências fortes de disponibilidade.
-    available = [
-        "adicionar ao carrinho",
-        "comprar agora",
-        "comprar com 1 clique",
-        "adicionar à lista de desejos",
-    ]
+    if any(word in lower for word in available_phrases):
+        return "available", "Oferta de compra encontrada"
 
-    has_unavailable = any(word in lower for word in unavailable)
-    has_available = any(word in lower for word in available)
-
-    # Se houver evidência clara de compra, priorizamos disponibilidade.
-    if has_available:
-        return "available", "Amazon apresentou opção de compra"
-
-    if has_unavailable:
-        return "unavailable", "Amazon indicou produto indisponível"
-
-    # "Em estoque" é outra evidência útil.
-    stock_phrases = [
-        "em estoque",
-        "em stock",
-        "disponível para envio",
-        "em pronta entrega",
-    ]
-
-    if any(word in lower for word in stock_phrases):
-        return "available", "Amazon indicou estoque"
+    if any(word in lower for word in unavailable_phrases):
+        return "unavailable", "Amazon indicou indisponibilidade"
 
     return "unknown", "Não foi possível confirmar o estoque"
+
+
+async def get_buybox_text(page):
+    selectors = [
+        "#desktop_buybox",
+        "#buybox",
+        "#rightCol",
+        "#availability",
+        "#qualifiedBuybox",
+    ]
+
+    parts = []
+
+    for selector in selectors:
+        try:
+            locator = page.locator(selector)
+            if await locator.count() > 0:
+                txt = await locator.first.inner_text(timeout=3000)
+                if txt:
+                    parts.append(txt)
+        except Exception:
+            pass
+
+    return "\n".join(parts)
 
 
 async def check_product(page, product):
     asin = product["asin"]
     name = product["name"]
-
     url = f"https://www.amazon.com.br/dp/{asin}"
 
     print(f"\nVerificando: {name}")
@@ -173,15 +176,22 @@ async def check_product(page, product):
 
         await page.wait_for_timeout(5000)
 
-        text = await page.locator("body").inner_text()
-
-        # Verificação HTTP.
         if response and response.status >= 400:
-            print(f"🟡 HTTP {response.status} — estado desconhecido")
+            print(f"🟡 HTTP {response.status}")
             return None
 
-        status, evidence = detect_stock(text)
-        price = extract_price(text)
+        buybox_text = await get_buybox_text(page)
+
+        if not buybox_text.strip():
+            print("🟡 Buy box não encontrada")
+            return {
+                "status": "unknown",
+                "price": "Preço não identificado",
+                "evidence": "Buy box não encontrada",
+            }
+
+        status, evidence = detect_stock(buybox_text)
+        price = extract_price(buybox_text)
 
         if status == "available":
             print(f"🟢 DISPONÍVEL — {price}")
@@ -207,14 +217,10 @@ async def check_product(page, product):
 
 
 async def main():
-
     state = load_state()
 
     async with async_playwright() as p:
-
-        browser = await p.chromium.launch(
-            headless=True
-        )
+        browser = await p.chromium.launch(headless=True)
 
         page = await browser.new_page(
             locale="pt-BR",
@@ -231,7 +237,6 @@ async def main():
         )
 
         for product in PRODUCTS:
-
             result = await check_product(page, product)
 
             if result is None:
@@ -239,40 +244,69 @@ async def main():
 
             asin = product["asin"]
 
-            previous = state.get(asin, {})
-            previous_status = previous.get("status")
+            previous = state.get(
+                asin,
+                {
+                    "status": None,
+                    "price": None,
+                    "unavailable_count": 0,
+                    "alerted_available": False,
+                },
+            )
 
             current_status = result["status"]
 
-            # Nunca sobrescreve o estado com "unknown".
+            # UNKNOWN nunca altera o estado.
             if current_status == "unknown":
                 print("   Estado anterior preservado.")
                 continue
 
-            # ALERTA: passou de indisponível para disponível.
-            if (
-                previous_status == "unavailable"
-                and current_status == "available"
-            ):
+            # PRODUTO DISPONÍVEL
+            if current_status == "available":
+                previous["unavailable_count"] = 0
 
-                message = (
-                    "🟢 PRODUTO VOLTOU AO ESTOQUE!\n\n"
-                    f"📦 {product['name']}\n"
-                    f"💰 {result['price']}\n"
-                    f"🔢 ASIN: {asin}\n\n"
-                    f"🛒 https://www.amazon.com.br/dp/{asin}"
+                # Só alerta se não estiver marcado como já alertado.
+                if not previous.get("alerted_available", False):
+                    if previous.get("status") == "unavailable":
+                        message = (
+                            "🟢 PRODUTO VOLTOU AO ESTOQUE!\n\n"
+                            f"📦 {product['name']}\n"
+                            f"💰 {result['price']}\n"
+                            f"🔢 ASIN: {asin}\n\n"
+                            f"🛒 https://www.amazon.com.br/dp/{asin}"
+                        )
+
+                        print("🚨 ENVIANDO ALERTA TELEGRAM!")
+                        send_telegram(message)
+
+                    previous["alerted_available"] = True
+
+                previous["status"] = "available"
+                previous["price"] = result["price"]
+                previous["evidence"] = result["evidence"]
+
+                state[asin] = previous
+                continue
+
+            # PRODUTO APARENTEMENTE INDISPONÍVEL
+            if current_status == "unavailable":
+                unavailable_count = previous.get("unavailable_count", 0) + 1
+                previous["unavailable_count"] = unavailable_count
+
+                print(
+                    f"   Confirmação de indisponibilidade: "
+                    f"{unavailable_count}/2"
                 )
 
-                print("🚨 ENVIANDO ALERTA TELEGRAM!")
+                # Só desarma o alerta depois de 2 leituras seguidas.
+                if unavailable_count >= 2:
+                    previous["status"] = "unavailable"
+                    previous["alerted_available"] = False
 
-                send_telegram(message)
+                previous["price"] = result["price"]
+                previous["evidence"] = result["evidence"]
 
-            # Salva somente estados confiáveis.
-            state[asin] = {
-                "status": current_status,
-                "price": result["price"],
-                "evidence": result["evidence"],
-            }
+                state[asin] = previous
 
         await browser.close()
 
