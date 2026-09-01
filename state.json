@@ -1,7 +1,7 @@
 {
   "B0789QHT4P": {
     "status": "available",
-    "price": "R$281,76",
+    "price": "R$281,90",
     "evidence": "Amazon apresentou opção de compra"
   },
   "B07VZSM1XF": {
@@ -31,7 +31,7 @@
   },
   "B07W1BF6D5": {
     "status": "unavailable",
-    "price": "R$181,93",
+    "price": "R$183,85",
     "evidence": "Amazon indicou produto indisponível"
   },
   "B0DRHYR931": {
@@ -45,8 +45,8 @@
     "evidence": "Amazon indicou produto indisponível"
   },
   "B0BRNVYSLY": {
-    "status": "available",
-    "price": "R$78,99",
-    "evidence": "Amazon apresentou opção de compra"
+    "status": "unavailable",
+    "price": "R$20,22",
+    "evidence": "Amazon indicou produto indisponível"
   }
 }
