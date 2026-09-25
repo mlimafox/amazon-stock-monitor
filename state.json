@@ -1,14 +1,14 @@
 {
   "B0789QHT4P": {
     "status": "available",
-    "price": "R$269,08",
+    "price": "Preço não identificado",
     "evidence": "Oferta de compra encontrada",
     "unavailable_count": 0,
     "alerted_available": true
   },
   "B07VZSM1XF": {
     "status": "available",
-    "price": "R$552,55",
+    "price": "R$548,61",
     "evidence": "Oferta de compra encontrada",
     "unavailable_count": 0,
     "alerted_available": true
@@ -17,21 +17,21 @@
     "status": "unavailable",
     "price": "Preço não identificado",
     "evidence": "Amazon indicou indisponibilidade",
-    "unavailable_count": 12,
+    "unavailable_count": 13,
     "alerted_available": false
   },
   "B0992PXW6L": {
     "status": "unavailable",
     "price": "Preço não identificado",
     "evidence": "Amazon indicou indisponibilidade",
-    "unavailable_count": 161,
+    "unavailable_count": 162,
     "alerted_available": false
   },
   "B0C93LL82B": {
     "status": "unavailable",
     "price": "Preço não identificado",
     "evidence": "Amazon indicou indisponibilidade",
-    "unavailable_count": 88,
+    "unavailable_count": 89,
     "alerted_available": false
   },
   "B09MC7TNRW": {
@@ -45,28 +45,28 @@
     "status": "unavailable",
     "price": "Preço não identificado",
     "evidence": "Amazon indicou indisponibilidade",
-    "unavailable_count": 161,
+    "unavailable_count": 162,
     "alerted_available": false
   },
   "B0DRHYR931": {
     "status": "unavailable",
     "price": "Preço não identificado",
     "evidence": "Amazon indicou indisponibilidade",
-    "unavailable_count": 161,
+    "unavailable_count": 162,
     "alerted_available": false
   },
   "B0BRNY49VK": {
     "status": "unavailable",
     "price": "Preço não identificado",
     "evidence": "Amazon indicou indisponibilidade",
-    "unavailable_count": 161,
+    "unavailable_count": 162,
     "alerted_available": false
   },
   "B0BRNVYSLY": {
     "status": "unavailable",
     "price": "Preço não identificado",
     "evidence": "Amazon indicou indisponibilidade",
-    "unavailable_count": 161,
+    "unavailable_count": 162,
     "alerted_available": false
   }
 }
