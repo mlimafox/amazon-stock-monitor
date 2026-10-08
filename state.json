@@ -1,10 +1,10 @@
 {
   "B0789QHT4P": {
-    "status": "available",
+    "status": "unavailable",
     "price": "Preço não identificado",
     "evidence": "Amazon indicou indisponibilidade",
-    "unavailable_count": 1,
-    "alerted_available": true
+    "unavailable_count": 2,
+    "alerted_available": false
   },
   "B07VZSM1XF": {
     "status": "available",
@@ -17,14 +17,14 @@
     "status": "unavailable",
     "price": "Preço não identificado",
     "evidence": "Amazon indicou indisponibilidade",
-    "unavailable_count": 2,
+    "unavailable_count": 3,
     "alerted_available": false
   },
   "B0992PXW6L": {
     "status": "unavailable",
     "price": "Preço não identificado",
     "evidence": "Amazon indicou indisponibilidade",
-    "unavailable_count": 208,
+    "unavailable_count": 209,
     "alerted_available": false
   },
   "B0C93LL82B": {
@@ -38,35 +38,35 @@
     "status": "unavailable",
     "price": "Preço não identificado",
     "evidence": "Amazon indicou indisponibilidade",
-    "unavailable_count": 18,
+    "unavailable_count": 19,
     "alerted_available": false
   },
   "B07W1BF6D5": {
     "status": "unavailable",
     "price": "Preço não identificado",
     "evidence": "Amazon indicou indisponibilidade",
-    "unavailable_count": 210,
+    "unavailable_count": 211,
     "alerted_available": false
   },
   "B0DRHYR931": {
     "status": "unavailable",
     "price": "Preço não identificado",
     "evidence": "Amazon indicou indisponibilidade",
-    "unavailable_count": 211,
+    "unavailable_count": 212,
     "alerted_available": false
   },
   "B0BRNY49VK": {
     "status": "unavailable",
     "price": "Preço não identificado",
     "evidence": "Amazon indicou indisponibilidade",
-    "unavailable_count": 211,
+    "unavailable_count": 212,
     "alerted_available": false
   },
   "B0BRNVYSLY": {
     "status": "unavailable",
     "price": "Preço não identificado",
     "evidence": "Amazon indicou indisponibilidade",
-    "unavailable_count": 211,
+    "unavailable_count": 212,
     "alerted_available": false
   }
 }
