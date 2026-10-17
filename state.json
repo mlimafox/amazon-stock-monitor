@@ -17,14 +17,14 @@
     "status": "unavailable",
     "price": "Preço não identificado",
     "evidence": "Amazon indicou indisponibilidade",
-    "unavailable_count": 17,
+    "unavailable_count": 18,
     "alerted_available": false
   },
   "B0992PXW6L": {
     "status": "unavailable",
     "price": "Preço não identificado",
     "evidence": "Amazon indicou indisponibilidade",
-    "unavailable_count": 255,
+    "unavailable_count": 256,
     "alerted_available": false
   },
   "B0C93LL82B": {
@@ -45,28 +45,28 @@
     "status": "unavailable",
     "price": "Preço não identificado",
     "evidence": "Amazon indicou indisponibilidade",
-    "unavailable_count": 257,
+    "unavailable_count": 258,
     "alerted_available": false
   },
   "B0DRHYR931": {
     "status": "unavailable",
     "price": "Preço não identificado",
     "evidence": "Amazon indicou indisponibilidade",
-    "unavailable_count": 258,
+    "unavailable_count": 259,
     "alerted_available": false
   },
   "B0BRNY49VK": {
     "status": "unavailable",
     "price": "Preço não identificado",
     "evidence": "Amazon indicou indisponibilidade",
-    "unavailable_count": 258,
+    "unavailable_count": 259,
     "alerted_available": false
   },
   "B0BRNVYSLY": {
     "status": "unavailable",
     "price": "Preço não identificado",
     "evidence": "Amazon indicou indisponibilidade",
-    "unavailable_count": 258,
+    "unavailable_count": 259,
     "alerted_available": false
   }
 }
