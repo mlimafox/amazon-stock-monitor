@@ -7,29 +7,29 @@
     "alerted_available": true
   },
   "B07VZSM1XF": {
-    "status": "available",
+    "status": "unavailable",
     "price": "Preço não identificado",
     "evidence": "Amazon indicou indisponibilidade",
-    "unavailable_count": 1,
-    "alerted_available": true
+    "unavailable_count": 2,
+    "alerted_available": false
   },
   "B08NVB7BS6": {
     "status": "unavailable",
     "price": "Preço não identificado",
     "evidence": "Amazon indicou indisponibilidade",
-    "unavailable_count": 9,
+    "unavailable_count": 10,
     "alerted_available": false
   },
   "B0992PXW6L": {
     "status": "available",
-    "price": "R$448,42",
+    "price": "R$455,85",
     "evidence": "Oferta de compra encontrada",
     "unavailable_count": 0,
     "alerted_available": true
   },
   "B0C93LL82B": {
     "status": "available",
-    "price": "R$284,23",
+    "price": "R$290,42",
     "evidence": "Oferta de compra encontrada",
     "unavailable_count": 0,
     "alerted_available": true
@@ -38,35 +38,35 @@
     "status": "unavailable",
     "price": "Preço não identificado",
     "evidence": "Amazon indicou indisponibilidade",
-    "unavailable_count": 30,
+    "unavailable_count": 31,
     "alerted_available": false
   },
   "B07W1BF6D5": {
     "status": "unavailable",
     "price": "Preço não identificado",
     "evidence": "Amazon indicou indisponibilidade",
-    "unavailable_count": 403,
+    "unavailable_count": 404,
     "alerted_available": false
   },
   "B0DRHYR931": {
     "status": "unavailable",
     "price": "Preço não identificado",
     "evidence": "Amazon indicou indisponibilidade",
-    "unavailable_count": 404,
+    "unavailable_count": 405,
     "alerted_available": false
   },
   "B0BRNY49VK": {
     "status": "unavailable",
     "price": "Preço não identificado",
     "evidence": "Amazon indicou indisponibilidade",
-    "unavailable_count": 405,
+    "unavailable_count": 406,
     "alerted_available": false
   },
   "B0BRNVYSLY": {
     "status": "unavailable",
     "price": "Preço não identificado",
     "evidence": "Amazon indicou indisponibilidade",
-    "unavailable_count": 405,
+    "unavailable_count": 406,
     "alerted_available": false
   }
 }
